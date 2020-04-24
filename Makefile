@@ -25,14 +25,6 @@ lint: vendor ## Lint all PHP files in a given folder
 test: vendor ## Runs PHPUnit
 	@vendor/bin/phpunit 
 
-pull-config-production: # Download configurations from S3 bucket
-	@aws s3 sync s3://pomelo-deployment-credentials/neon/ ./ --cache-control "private, no-cache"
-	@mv ".env.production" ".env"
-
-pull-config-staging: # Download configurations from S3 bucket
-	@aws s3 sync s3://pomelo-deployment-credentials/neon/ ./ --cache-control "private, no-cache"
-	@mv ".env.staging" ".env"
-
 test-integration: test coverage ##Unit/Integration Tests & Coverage
 
 build: # build package
