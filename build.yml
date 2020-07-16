@@ -3,12 +3,33 @@ name: Build
 
 on: [push]
 
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
 
-      - name: 'Run Lint'
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.2"
+          extensions: mbstring, bcmath, curl, intl
+
+      - name: Initialize build-harness
+        run: |
+          make init
+      
+      - name: Run - lint
         run: |
           make lint
+
+      - name: Run - make test env
+        run: |
+          cp .env.example .env
+
+      - name: Run - test-coverage
+        run: |
+          make test-coverage
